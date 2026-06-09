@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+    --aurora: linear-gradient(135deg, #6ee7f9 0%, #818cf8 35%, #a78bfa 65%, #f472b6 100%);
+  }
+
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    background: #06070b;
+  }
+
+  body {
+    margin: 0;
+    background: #06070b;
+    color: #edeff7;
+    font-family: 'Inter', system-ui, sans-serif;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  ::selection {
+    background: rgba(167, 139, 250, 0.35);
+    color: #ffffff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(158, 163, 184, 0.18);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(158, 163, 184, 0.38);
+    background-clip: padding-box;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    background: rgba(15, 17, 24, 0.72);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      0 0 48px rgba(110, 231, 249, 0.08),
+      0 24px 64px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(237, 239, 247, 0.07),
+      inset 1px 0 0 rgba(237, 239, 247, 0.03);
+  }
+
+  .glass-panel-active {
+    background: rgba(10, 12, 18, 0.88);
+    -webkit-backdrop-filter: blur(40px) saturate(170%);
+    backdrop-filter: blur(40px) saturate(170%);
+    border: 1px solid rgba(110, 231, 249, 0.22);
+    box-shadow:
+      0 0 64px rgba(167, 139, 250, 0.18),
+      0 32px 80px rgba(0, 0, 0, 0.66),
+      inset 0 1px 0 rgba(237, 239, 247, 0.12);
+  }
+
+  .hairline {
+    border: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  /* Aurora gradient clipped to text */
+  .text-aurora {
+    background: linear-gradient(135deg, #6ee7f9 0%, #818cf8 35%, #a78bfa 65%, #f472b6 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Fine film grain — sits above everything, never blocks input */
+  .grain {
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 200px 200px;
+  }
+
+  .drag-none {
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}

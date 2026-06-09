@@ -1,6 +1,5 @@
 import { memo, useState } from 'react'
 import { nodes, hero, type SpatialNode } from '../data/content'
-import { useUI } from '../store'
 
 function hexA(hex: string, a: number) {
   const h = hex.replace('#', '')
@@ -25,15 +24,14 @@ interface CardProps {
 
 const ArtifactCard = memo(function ArtifactCard({ node, onSelect, onFocusNode }: CardProps) {
   const [hovered, setHovered] = useState(false)
-  const active = useUI((s) => s.selectedId === node.id)
-  const lit = hovered || active
+  const lit = hovered
   const width = KIND_WIDTH[node.kind] * node.sizeScale
 
   return (
     <button
       data-no-pan
+      data-cursor-label="view →"
       aria-label={`${node.label} — ${node.kind}. Open.`}
-      aria-pressed={active}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       onFocus={() => onFocusNode(node)}

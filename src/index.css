@@ -38,6 +38,14 @@
     color: #ffffff;
   }
 
+  /* hide the native cursor only when the custom cursor is active (fine pointers) */
+  @media (hover: hover) and (pointer: fine) {
+    html.cursor-active,
+    html.cursor-active * {
+      cursor: none !important;
+    }
+  }
+
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;

@@ -13,15 +13,18 @@ draggable + zoomable cosmos where every project floats as a luminous artifact yo
   transforms a "world" layer so the project cards never re-render mid-drag (`src/hooks/useSpatialViewport.ts`).
 - **⌘K command palette**, a **JARVIS-homage terminal**, a **guided tour**, a **minimap**, and a
   focus-following breadcrumb.
-- **Case-study panels** for 9 projects + CUBE work, with shareable deep-links (`/#jarvis`).
+- **Individual, scrollable case-study pages** per project + CUBE work (hash routing) — a tall hero,
+  overview, **live embedded demos**, stack, measured impact, links, and prev/next navigation.
+- **Custom animated cursor** — an instant dot + a spring-lagged aurora ring that grows and labels
+  itself over interactive elements; auto-disabled on touch / reduced-motion.
 - **Full accessibility fallback** — touch / small-screen / `prefers-reduced-motion` visitors get a
-  clean, linear, keyboard-friendly layout instead of the canvas.
+  clean, card-based, keyboard-friendly layout instead of the canvas.
 
 ## Power-user URLs
 
 | URL | Effect |
 |-----|--------|
-| `/#jarvis` | deep-link straight into a project |
+| `/#/p/jarvis` | deep-link straight into a project page |
 | `?spatial=1` | force the immersive canvas (e.g. on touch laptops) |
 | `?noboot=1` | skip the boot intro |
 

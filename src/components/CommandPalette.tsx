@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useUI } from '../store'
 import { contact, nodes } from '../data/content'
@@ -11,15 +12,10 @@ interface Command {
   run: () => void
 }
 
-interface Props {
-  flyTo: (x: number, y: number, scale?: number) => void
-  reset: () => void
-}
-
-export function CommandPalette({ flyTo, reset }: Props) {
+export function CommandPalette() {
+  const navigate = useNavigate()
   const open = useUI((s) => s.paletteOpen)
   const toggle = useUI((s) => s.togglePalette)
-  const select = useUI((s) => s.select)
   const openTerminal = useUI((s) => s.openTerminal)
   const startTour = useUI((s) => s.startTour)
 
@@ -31,24 +27,23 @@ export function CommandPalette({ flyTo, reset }: Props) {
   const commands = useMemo<Command[]>(() => {
     const nav: Command[] = nodes.map((n) => ({
       id: `go-${n.id}`,
-      label: n.id === 'hero' ? 'Go to Home' : `Go to ${n.label}`,
-      hint: n.kind,
+      label: n.id === 'hero' ? 'Go to Home' : `Open ${n.label}`,
+      hint: n.kind === 'hero' ? 'home' : n.kind,
       keywords: `${n.label} ${n.id} ${n.kind} ${n.tag ?? ''}`.toLowerCase(),
       run: () => {
-        flyTo(n.x, n.y, n.flyToScale)
+        navigate(n.id === 'hero' ? '/' : `/p/${n.id}`)
         toggle(false)
-        if (n.kind !== 'hero') setTimeout(() => select(n.id), 520)
       },
     }))
     const system: Command[] = [
-      { id: 'reset', label: 'Reset View', hint: 'view', keywords: 'reset home center origin', run: () => { reset(); toggle(false) } },
+      { id: 'cosmos', label: 'Back to Cosmos', hint: 'view', keywords: 'home cosmos reset center', run: () => { navigate('/'); toggle(false) } },
       { id: 'terminal', label: 'Open Terminal', hint: 'tool', keywords: 'terminal cli console command', run: () => { openTerminal() } },
-      { id: 'tour', label: 'Start Guided Tour', hint: 'tour', keywords: 'tour guide walkthrough intro', run: () => { startTour() } },
+      { id: 'tour', label: 'Start Guided Tour', hint: 'tour', keywords: 'tour guide walkthrough intro', run: () => { navigate('/'); startTour() } },
       { id: 'email', label: 'Copy Email Address', hint: 'contact', keywords: 'email copy mail contact', run: () => { navigator.clipboard?.writeText(contact.email); toggle(false) } },
       { id: 'github', label: 'Open GitHub Profile', hint: 'link', keywords: 'github code repos source', run: () => { window.open(contact.github, '_blank', 'noopener'); toggle(false) } },
     ]
     return [...nav, ...system]
-  }, [flyTo, reset, toggle, select, openTerminal, startTour])
+  }, [navigate, toggle, openTerminal, startTour])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -128,9 +123,7 @@ export function CommandPalette({ flyTo, reset }: Props) {
               style={{ fontSize: '1rem' }}
             />
             <ul id="palette-list" role="listbox" className="max-h-[44vh] overflow-y-auto py-2">
-              {filtered.length === 0 && (
-                <li className="px-5 py-3 font-mono text-[0.8rem] text-ink-muted">no matches</li>
-              )}
+              {filtered.length === 0 && <li className="px-5 py-3 font-mono text-[0.8rem] text-ink-muted">no matches</li>}
               {filtered.map((c, i) => (
                 <li
                   key={c.id}

@@ -2,7 +2,6 @@ import { create } from 'zustand'
 
 interface UIState {
   booted: boolean
-  selectedId: string | null
   terminalOpen: boolean
   paletteOpen: boolean
   tourActive: boolean
@@ -10,8 +9,6 @@ interface UIState {
   hasExplored: boolean
 
   setBooted: (v: boolean) => void
-  select: (id: string | null) => void
-  closePanel: () => void
   openTerminal: () => void
   closeTerminal: () => void
   togglePalette: (v?: boolean) => void
@@ -21,22 +18,21 @@ interface UIState {
   markExplored: () => void
 }
 
+const hasParam = (p: string) => typeof location !== 'undefined' && location.search.includes(p)
+
 export const useUI = create<UIState>((set) => ({
-  booted: typeof location !== 'undefined' && location.search.includes('noboot'),
-  selectedId: null,
-  terminalOpen: typeof location !== 'undefined' && location.search.includes('term'),
-  paletteOpen: typeof location !== 'undefined' && location.search.includes('cmd'),
+  booted: hasParam('noboot'),
+  terminalOpen: hasParam('term'),
+  paletteOpen: hasParam('cmd'),
   tourActive: false,
   tourStep: 0,
   hasExplored: typeof localStorage !== 'undefined' && localStorage.getItem('vishnu_os_explored') === '1',
 
   setBooted: (v) => set({ booted: v }),
-  select: (id) => set({ selectedId: id }),
-  closePanel: () => set({ selectedId: null }),
   openTerminal: () => set({ terminalOpen: true, paletteOpen: false }),
   closeTerminal: () => set({ terminalOpen: false }),
   togglePalette: (v) => set((s) => ({ paletteOpen: v ?? !s.paletteOpen })),
-  startTour: () => set({ tourActive: true, tourStep: 0, paletteOpen: false, selectedId: null }),
+  startTour: () => set({ tourActive: true, tourStep: 0, paletteOpen: false }),
   stopTour: () => set({ tourActive: false, tourStep: 0 }),
   setTourStep: (n) => set({ tourStep: n }),
   markExplored: () => {

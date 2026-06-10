@@ -267,6 +267,53 @@ function SectionContent({ node }: { node: SpatialNode }) {
     )
   }
 
+  if (node.id === 'experience') {
+    return (
+      <>
+        <Reveal>
+          <SectionLabel accent={accent}>// where I’ve shipped</SectionLabel>
+          <div className="flex flex-wrap items-end justify-between gap-2">
+            <h3 className="font-display text-ink" style={{ fontSize: '1.7rem', fontWeight: 600 }}>
+              {experience.company} · {experience.role}
+            </h3>
+            <span className="font-mono text-[0.8rem] text-ink-muted">{experience.period}</span>
+          </div>
+          <p className="mt-1 text-ink-secondary">{experience.location}</p>
+        </Reveal>
+        <Reveal>
+          <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
+            {experience.metrics.map((m) => (
+              <div key={m.label} className="rounded-lg border border-white/[0.07] bg-white/[0.02] p-4">
+                <div className="font-display" style={{ color: accent, fontSize: '1.7rem', fontWeight: 700 }}>
+                  {m.value}
+                </div>
+                <div className="mt-1 text-ink" style={{ fontSize: '0.82rem' }}>
+                  {m.label}
+                </div>
+                <div className="mt-1.5 text-ink-muted" style={{ fontSize: '0.72rem', lineHeight: 1.4 }}>
+                  {m.detail}
+                </div>
+              </div>
+            ))}
+          </div>
+        </Reveal>
+        <Reveal>
+          <p className="mb-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-ink-muted">what I built</p>
+          <ul className="space-y-3">
+            {experience.builds.map((b, i) => (
+              <li key={i} className="flex gap-3 text-ink-secondary" style={{ fontSize: '1rem', lineHeight: 1.6 }}>
+                <span style={{ color: accent }} aria-hidden>
+                  ▹
+                </span>
+                {b}
+              </li>
+            ))}
+          </ul>
+        </Reveal>
+      </>
+    )
+  }
+
   if (node.id === 'skills') {
     return (
       <Reveal>
